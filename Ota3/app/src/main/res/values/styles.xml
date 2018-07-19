@@ -1,0 +1,10 @@
+<resources>
+
+
+
+    <style name="top_snack_bar_anim_style">
+        <item name="android:windowEnterAnimation">@anim/notification_top_in</item>
+        <item name="android:windowExitAnimation">@anim/notification_top_out</item>
+    </style>
+
+</resources>

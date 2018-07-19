@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--无升级 版本 view-->
+    <RelativeLayout
+        android:id="@+id/layout_no_upgrade"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <RelativeLayout
+            android:id="@+id/lay_version"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!--中间提示文本-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+                <!--版本信息-->
+                <com.fotile.c2i.ota.view.OtaThinTextView
+                    android:id="@+id/txt_version_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20px"
+                    android:gravity="center"
+                    android:text="@string/no_update_tips"
+                    android:lineSpacingMultiplier="1.8"
+                    android:textColor="#ffffff"
+                    android:textSize="30px"/>
+
+
+
+            </LinearLayout>
+            <!--底部老版本提示-->
+
+        </RelativeLayout>
+
+
+
+
+    </RelativeLayout>
+
+    <!-- 下载中界面 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layout_upgrading"
+        android:visibility="gone">
+        <!--进度提示-->
+        <LinearLayout
+            android:id="@+id/lay_upgrade"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <com.fotile.c2i.ota.view.OtaThinTextView
+                android:id="@+id/tv_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="正在下载升级包"
+                android:layout_marginBottom="100px"
+                android:textColor="#ffffff"
+                android:textSize="30sp"/>
+
+
+            <com.fotile.c2i.ota.view.HorizontalProgressBarWithNumber
+                android:id="@+id/pbar_download"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:layout_marginRight="100dp"
+                android:layout_marginTop="20dp"
+                app:progress_reached_bar_height="12dp"
+                app:progress_reached_color="#e1c79b"
+                app:progress_text_color="#e1c79b"
+                app:progress_text_size="16sp"
+                app:progress_unreached_bar_height="15dp"
+                app:progress_unreached_color="#949292"/>
+        </LinearLayout>
+    </RelativeLayout>
+    <!-- 检测中 界面 -->
+    <RelativeLayout
+        android:id="@+id/lay_laoding"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <com.fotile.c2i.ota.view.OtaThinTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/update_loading_tips"
+                android:textColor="@color/text_color"
+                android:textSize="28sp"
+                android:layout_marginRight="10dp"/>
+            <com.fotile.c2i.ota.view.OtaLoadingView
+                android:id="@+id/img_loading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+    <!-- 有 新版本    重试    下载完成view-->
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/layout_main_completed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--底部按钮-->
+        <LinearLayout
+            android:id="@+id/bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40px"
+            android:orientation="horizontal">
+
+            <com.fotile.c2i.ota.view.OtaThinButton
+                android:id="@+id/btn_upgrade_now"
+                android:layout_width="220px"
+                android:layout_height="80px"
+                android:layout_marginLeft="65px"
+                android:layout_marginRight="65px"
+                android:background="@drawable/selecter_btn_text"
+                android:gravity="center"
+                android:text="马上安装"
+                android:textColor="#e1c79b"
+                android:textSize="36px"/>
+
+            <com.fotile.c2i.ota.view.OtaThinButton
+                android:id="@+id/btn_upgrade_later"
+                android:layout_width="220px"
+                android:layout_height="80px"
+                android:layout_marginLeft="65px"
+                android:layout_marginRight="65px"
+                android:background="@drawable/selecter_btn_text"
+                android:gravity="center"
+                android:text="稍后安装"
+                android:textColor="#e1c79b"
+                android:textSize="36px"/>
+            <com.fotile.c2i.ota.view.OtaThinButton
+                android:id="@+id/update_bottom"
+                android:layout_width="220px"
+                android:layout_height="80px"
+                android:layout_marginLeft="65px"
+                android:layout_marginRight="65px"
+                android:background="@drawable/selecter_btn_text"
+                android:gravity="center"
+                android:text="下载"
+                android:textColor="#e1c79b"
+                android:textSize="36px"/>
+
+            <com.fotile.c2i.ota.view.OtaThinButton
+                android:id="@+id/update_retry_bottom"
+                android:layout_width="220px"
+                android:layout_height="80px"
+                android:layout_marginLeft="65px"
+                android:layout_marginRight="65px"
+                android:background="@drawable/selecter_btn_text"
+                android:gravity="center"
+                android:text="继续下载"
+                android:textColor="#e1c79b"
+                android:textSize="36px"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/bottom"
+            android:layout_marginBottom="20px"
+            android:layout_marginLeft="50px"
+            android:layout_marginRight="50px"
+            android:orientation="vertical">
+
+            <!--标题-->
+            <com.fotile.c2i.ota.view.OtaThinTextView
+                android:id="@+id/txt_update_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="30px"
+                android:textColor="#ffffff"
+                android:textSize="30px"/>
+
+            <com.fotile.c2i.ota.view.OtaThinTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/download_finish_tips"
+                android:layout_marginTop="15px"
+                android:alpha="0.6"
+                android:text="已下载"
+                android:visibility="invisible"
+                android:textColor="#ffffff"
+                android:textSize="18px"/>
+
+            <com.fotile.c2i.ota.view.OtaThinTextView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="15px"
+                android:background="#949292"/>
+            <!--更新内容-->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:layout_marginTop="30px"
+                android:scrollbarSize="4px"
+                android:scrollbarThumbVertical="@drawable/scrollbar_style"
+                android:scrollbarTrackVertical="@drawable/scrollbar_style_background"
+                android:fadeScrollbars="false"
+                android:scrollbarStyle="outsideInset">
+
+                <com.fotile.c2i.ota.view.OtaThinTextView
+                    android:id="@+id/tv_update_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingRight="8dp"
+                    android:alpha="0.6"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="@string/update_tips_version"
+                    android:textColor="#ffffff"
+                    android:textSize="24px"/>
+            </ScrollView>
+
+        </LinearLayout>
+    </RelativeLayout>
+    <!-- 错误界面  -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layout_error"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <com.fotile.c2i.ota.view.OtaThinTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="32sp"
+                android:text="@string/no_wifi_tips"/>
+            <com.fotile.c2i.ota.view.OtaThinButton
+                android:layout_marginTop="80px"
+                android:layout_width="220px"
+                android:layout_height="80px"
+                android:id="@+id/set_wifi"
+                android:text="@string/go_to_wifi_setting"
+                android:textColor="#e1c79b"
+                android:background="@drawable/selecter_btn_text"
+                android:textSize="36px"/>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+    <!-- 检测错误界面 -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layout_error_connect"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+            <com.fotile.c2i.ota.view.OtaThinTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
+                android:textSize="32sp"
+                android:text="@string/no_connect_tips"/>
+            <com.fotile.c2i.ota.view.OtaThinButton
+                android:layout_marginTop="80px"
+                android:layout_width="220px"
+                android:layout_height="80px"
+                android:id="@+id/retry"
+                android:text="@string/retry_btn"
+                android:textColor="#e1c79b"
+                android:background="@drawable/selecter_btn_text"
+                android:textSize="36px"/>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

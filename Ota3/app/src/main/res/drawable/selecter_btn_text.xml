@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--有选中效果的按钮-->
+<!--确定取消等按钮-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/rect_btn_cancel_pressed" android:state_selected="true"></item>
+    <item android:drawable="@drawable/rect_btn_cancel_pressed" android:state_pressed="true"></item>
+    <item android:drawable="@drawable/rect_btn_cancel_pressed" android:state_checked="true"></item>
+    <item android:drawable="@drawable/rect_btn_cancel_normal"></item>
+</selector>

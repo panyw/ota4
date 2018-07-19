@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Ota</string>
+    <string name="update_loading_tips">检测系统升级中</string>
+    <string name="no_wifi_tips">网络未连接</string>
+    <string name="no_connect_tips">检测失败，请重试</string>
+    <string name="go_to_wifi_setting">去连接网络</string>
+    <string name="retry_btn">重试</string>
+    <string name="no_update_tips">无新版本</string>
+    <string name="update_tips_version">如果需要更多有趣的功能，请点击更新\n如果需要更加稳定的功能，请点击下载\n（彩蛋）</string>
+
+</resources>
