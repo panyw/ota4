@@ -606,7 +606,7 @@ public class DownLoadService extends Service {
                             uiHandler.sendMessage(msg);
                         }else {
                             OtaLog.LOGOta("下载监听错误下载====",cause);
-                            OtaLog.LOGOta("下载监听错误下载====",realCause);
+
                             Message msg = uiHandler.obtainMessage();
                             dowFileInfo.setStatus(DownloadStatus.ERROR);
                             msg.obj = new OtaFileInfo(dowFileInfo, "");
