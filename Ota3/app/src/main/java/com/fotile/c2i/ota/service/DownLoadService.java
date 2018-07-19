@@ -24,6 +24,7 @@ import com.fotile.c2i.ota.util.OtaUpgradeUtil;
 import com.fotile.c2i.ota.view.OtaTopSnackBar;
 import com.liulishuo.okdownload.DownloadTask;
 import com.liulishuo.okdownload.SpeedCalculator;
+import com.liulishuo.okdownload.StatusUtil;
 import com.liulishuo.okdownload.core.breakpoint.BlockInfo;
 import com.liulishuo.okdownload.core.breakpoint.BreakpointInfo;
 import com.liulishuo.okdownload.core.cause.EndCause;
@@ -93,6 +94,8 @@ public class DownLoadService extends Service {
     private DownloadTask task;
     SimpleListener simpleListener;
     FileInfo dowFileInfo;
+
+    StatusUtil.Status status;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -149,6 +152,12 @@ public class DownLoadService extends Service {
             state = DownloadStatus.NORMAL;
             OtaLog.LOGOta("下载Ota包url", url);
             OtaLog.LOGOta("下载Ota包保存的本地路径", file_name_ota);
+            if(task != null){
+                status =  StatusUtil.getStatus(task);
+                OtaLog.LOGOta("当前状态 === ", status);
+            }
+
+
             //开始下载
             File downloadFile = new File(OtaConstant.FILE_FOLDER);
             task = new DownloadTask.Builder(url, downloadFile)
