@@ -592,17 +592,31 @@ public class DownLoadService extends Service {
                          */
                         uiHandler.sendMessageDelayed(msg,1000);
                     }else{
-                        last_progress = 100f;
-                        if(is_ota_checking){//ota检测中 直接返回
-                            return;
+                        if(cause.equals(EndCause.COMPLETED)){
+                            last_progress = 100f;
+                            if(is_ota_checking){//ota检测中 直接返回
+                                return;
+                            }
+                            is_ota_checking = true;//ota 检测中
+                            ota_file_check_flag = checkOtamd5();
+                            is_ota_checking = false;
+                            dowFileInfo.setStatus(DownloadStatus.COMPLETE);
+                            Message msg = uiHandler.obtainMessage();
+                            msg.obj = new OtaFileInfo(dowFileInfo, "");
+                            uiHandler.sendMessage(msg);
+                        }else {
+                            OtaLog.LOGOta("下载监听错误下载====",cause);
+                            OtaLog.LOGOta("下载监听错误下载====",realCause);
+                            Message msg = uiHandler.obtainMessage();
+                            dowFileInfo.setStatus(DownloadStatus.ERROR);
+                            msg.obj = new OtaFileInfo(dowFileInfo, "");
+                            //这里需要延时1秒
+                        /*
+                         * 网络断开的时候不会立马检测到，所以要延迟
+                         */
+                            uiHandler.sendMessageDelayed(msg,1000);
                         }
-                        is_ota_checking = true;//ota 检测中
-                        ota_file_check_flag = checkOtamd5();
-                        is_ota_checking = false;
-                        dowFileInfo.setStatus(DownloadStatus.COMPLETE);
-                        Message msg = uiHandler.obtainMessage();
-                        msg.obj = new OtaFileInfo(dowFileInfo, "");
-                        uiHandler.sendMessage(msg);
+
                     }
 
                 }
