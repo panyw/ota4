@@ -483,7 +483,7 @@ public class SystemUpgradeFragment extends Fragment {
         File file = new File(OtaConstant.FILE_NAME_OTA);
         //网络断开且有本地文件
         if (file.exists() && !OtaTool.isNetworkAvailable(mcontext)){
-            OtaLog.LOGOta("升级界面"," 开始校验md5");
+            OtaLog.LOGOta("升级界面"," 开始校验md5 ===  有本地文件");
 
             String lastMd5 = OtaTool.getLastUpdateVersionMD5(mcontext);
             String lastname =OtaTool.getLastUpdateVersionName(mcontext);
@@ -798,16 +798,22 @@ public class SystemUpgradeFragment extends Fragment {
         //mInfo.size = String.valueOf( OtaTool.getFileLength(mInfo.url));
         File file = new File(OtaConstant.FILE_NAME_OTA);
         //有本地文件
-        if (file.exists() && OtaTool.checkDownloadFileMd5(mInfo)){
-            checkhandler.sendEmptyMessage(VIEW_DOWN_COMPLETE);
-            OtaTool.RedTips = 1;
-            EventBus.getDefault().post(new DownloadEvent(OtaConstant.DOWNLOAD_COMPLETE,"下载完成"));
-            return;
-        }else {
-            file.delete();
-            OtaTool.RedTips = 2;
-            EventBus.getDefault().post(new DownloadEvent(OtaConstant.DOWNLOAD_COMPLETE_ERROR,"下载完成,但是失败了"));
+        int state = DownLoadService.getDownLoadState();
+        if(state == DownloadStatus.COMPLETE) //下载完成了
+        {
+            if (file.exists() && OtaTool.checkDownloadFileMd5(mInfo)){
+                checkhandler.sendEmptyMessage(VIEW_DOWN_COMPLETE);
+                OtaTool.RedTips = 1;
+                EventBus.getDefault().post(new DownloadEvent(OtaConstant.DOWNLOAD_COMPLETE,"下载完成"));
+                return;
+            }else {
+
+                file.delete();
+                OtaTool.RedTips = 2;
+                EventBus.getDefault().post(new DownloadEvent(OtaConstant.DOWNLOAD_COMPLETE_ERROR,"下载完成,但是失败了"));
+            }
         }
+
         checkhandler.sendEmptyMessage(NEW_INVALID_PACKAGE);
     }
 

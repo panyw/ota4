@@ -237,9 +237,10 @@ public class DownLoadService extends Service {
             OtaFileInfo otaFileInfo = (OtaFileInfo) msg.obj;
 
             if (null != otaFileInfo && null != otaFileInfo.fileInfo) {
-                OtaLog.LOGOta("UIhandler更新",otaFileInfo.fileInfo.getStatus());
                 String current_act_name = OtaTool.getCurrentActivityName(DownLoadService.this);
+                OtaLog.LOGOta("=== OTA state change",state+" ====> " + otaFileInfo.fileInfo.getStatus());
                 state = otaFileInfo.fileInfo.getStatus();
+
                 switch (state) {
                     //准备中
                     case DownloadStatus.START:
@@ -559,18 +560,18 @@ public class DownLoadService extends Service {
                         downloadInfo = info;
                     }
 
-                    OtaLog.LOGOta("下载监听","infoReady");
+                   // OtaLog.LOGOta("下载监听","infoReady");
                 }
 
                 @Override public void connectStart(@NonNull DownloadTask task, int blockIndex,
                                                    @NonNull Map<String, List<String>> requestHeader) {
-                    OtaLog.LOGOta("下载监听","connectStart");
+                   // OtaLog.LOGOta("下载监听","connectStart");
                 }
 
                 @Override
                 public void connectEnd(@NonNull DownloadTask task, int blockIndex, int responseCode,
                                        @NonNull Map<String, List<String>> responseHeader) {
-                    OtaLog.LOGOta("下载监听","connectEnd");
+                   // OtaLog.LOGOta("下载监听","connectEnd");
 
                 }
 
