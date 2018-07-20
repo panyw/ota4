@@ -161,10 +161,10 @@ public class DownLoadService extends Service {
                 task = new DownloadTask.Builder(url, downloadFile)
                         .setFilename(OtaConstant.OTANAME)
                         // the minimal interval millisecond for callback progress
-                        .setMinIntervalMillisCallbackProcess(64)
+                        .setMinIntervalMillisCallbackProcess(512)
                         // ignore the same task has already completed in the past.
-
                         .setPassIfAlreadyCompleted(false)
+                        .setAutoCallbackToUIThread(false)
                         .build();
                 dowFileInfo = new FileInfo(url,"ota");
                 dowFileInfo.setTotalBytes(1000);
@@ -200,10 +200,10 @@ public class DownLoadService extends Service {
                 task = new DownloadTask.Builder(ex_url, downloadFile)
                         .setFilename(OtaConstant.OTANAME_MCU)
                         // the minimal interval millisecond for callback progress
-                        .setMinIntervalMillisCallbackProcess(64)
+                        .setMinIntervalMillisCallbackProcess(512)
                         // ignore the same task has already completed in the past.
-
                         .setPassIfAlreadyCompleted(false)
+                        .setAutoCallbackToUIThread(false)
                         .build();
                 dowFileInfo = new FileInfo(ex_url, "mcu");
                 dowFileInfo.setTotalBytes(1000);
@@ -560,18 +560,18 @@ public class DownLoadService extends Service {
                         downloadInfo = info;
                     }
 
-                   // OtaLog.LOGOta("下载监听","infoReady");
+                    // OtaLog.LOGOta("下载监听","infoReady");
                 }
 
                 @Override public void connectStart(@NonNull DownloadTask task, int blockIndex,
                                                    @NonNull Map<String, List<String>> requestHeader) {
-                   // OtaLog.LOGOta("下载监听","connectStart");
+                    // OtaLog.LOGOta("下载监听","connectStart");
                 }
 
                 @Override
                 public void connectEnd(@NonNull DownloadTask task, int blockIndex, int responseCode,
                                        @NonNull Map<String, List<String>> responseHeader) {
-                   // OtaLog.LOGOta("下载监听","connectEnd");
+                    // OtaLog.LOGOta("下载监听","connectEnd");
 
                 }
 
@@ -580,7 +580,7 @@ public class DownLoadService extends Service {
                 public void progressBlock(@NonNull DownloadTask task, int blockIndex,
                                           long currentBlockOffset,
                                           @NonNull SpeedCalculator blockSpeed) {
-                   // OtaLog.LOGOta("下载监听","progressBlock： ==== "+ blockIndex+" ===== "+ currentBlockOffset);
+                    // OtaLog.LOGOta("下载监听","progressBlock： ==== "+ blockIndex+" ===== "+ currentBlockOffset);
                 }
 
                 @Override public void progress(@NonNull DownloadTask task, long currentOffset,

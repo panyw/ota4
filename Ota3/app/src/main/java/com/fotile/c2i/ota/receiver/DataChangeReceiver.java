@@ -20,7 +20,7 @@ public class DataChangeReceiver extends BroadcastReceiver {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                OtaLog.LOGOta("时间改变监听","开始执行代码 巴拉巴拉小魔仙");
+                OtaLog.LOGOta("时间改变监听","开始判断计时器状态 == 如果没有计时器就创建 有就不处理");
                 OtaTool.startDownloadBackGround(OtaTool.getMetaValue(context, OtaConstant.SYS_OF_PACKAGE),context);
             }
         }).start();
