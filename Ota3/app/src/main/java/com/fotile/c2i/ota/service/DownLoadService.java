@@ -149,28 +149,31 @@ public class DownLoadService extends Service {
      */
     private void startDownload() {
         if (!TextUtils.isEmpty(url)) {
-            state = DownloadStatus.NORMAL;
-            OtaLog.LOGOta("下载Ota包url", url);
-            OtaLog.LOGOta("下载Ota包保存的本地路径", file_name_ota);
-            if(task != null){
-                status =  StatusUtil.getStatus(task);
-                OtaLog.LOGOta("当前状态 === ", status);
+            status = StatusUtil.getStatus(url, OtaConstant.FILE_FOLDER, OtaConstant.OTANAME);
+            OtaLog.LOGOta("当前状态 === ", status);
+            if(!StatusUtil.Status.RUNNING.equals(status)){
+                state = DownloadStatus.NORMAL;
+                OtaLog.LOGOta("下载Ota包url", url);
+                OtaLog.LOGOta("下载Ota包保存的本地路径", file_name_ota);
+
+                //开始下载
+                File downloadFile = new File(OtaConstant.FILE_FOLDER);
+                task = new DownloadTask.Builder(url, downloadFile)
+                        .setFilename(OtaConstant.OTANAME)
+                        // the minimal interval millisecond for callback progress
+                        .setMinIntervalMillisCallbackProcess(64)
+                        // ignore the same task has already completed in the past.
+
+                        .setPassIfAlreadyCompleted(false)
+                        .build();
+                dowFileInfo = new FileInfo(url,"ota");
+                dowFileInfo.setTotalBytes(1000);
+                task.enqueue(simpleListener.downloadListener);
+            }else {
+
+                OtaLog.LOGOta("当前有正在下载的进程 ota", status);
             }
 
-
-            //开始下载
-            File downloadFile = new File(OtaConstant.FILE_FOLDER);
-            task = new DownloadTask.Builder(url, downloadFile)
-                    .setFilename(OtaConstant.OTANAME)
-                    // the minimal interval millisecond for callback progress
-                    .setMinIntervalMillisCallbackProcess(64)
-                    // ignore the same task has already completed in the past.
-
-                    .setPassIfAlreadyCompleted(false)
-                    .build();
-            dowFileInfo = new FileInfo(url,"ota");
-            dowFileInfo.setTotalBytes(1000);
-            task.enqueue(simpleListener.downloadListener);
 
             //FileDownloader.start(url, OtaConstant.OTANAME, new ListenerWrapper());
         }
@@ -181,24 +184,36 @@ public class DownLoadService extends Service {
      */
     private void startMcuDownload() {
         if (!TextUtils.isEmpty(ex_url)) {
-            state = DownloadStatus.NORMAL;
-            OtaLog.LOGOta("下载mcu包url", ex_url);
-            OtaLog.LOGOta("下载mcu包保存的本地路径", file_name_mcu);
-            //开始下载
-            File downloadFile = new File(OtaConstant.FILE_FOLDER);
-            task = new DownloadTask.Builder(ex_url, downloadFile)
-                    .setFilename(OtaConstant.OTANAME_MCU)
-                    // the minimal interval millisecond for callback progress
-                    .setMinIntervalMillisCallbackProcess(64)
-                    // ignore the same task has already completed in the past.
 
-                    .setPassIfAlreadyCompleted(false)
-                    .build();
-            dowFileInfo = new FileInfo(ex_url,"mcu");
-            dowFileInfo.setTotalBytes(1000);
-            task.enqueue(simpleListener.mcuDownloadListener);
+            status = StatusUtil.getStatus(url, OtaConstant.FILE_FOLDER, OtaConstant.OTANAME_MCU);
+            OtaLog.LOGOta("=== 当前状态在开始下载前",status);
+            if (!StatusUtil.Status.RUNNING.equals(status)) {
+                if(StatusUtil.Status.COMPLETED.equals(status)){
+                    startDownload();
+                    return;
+                }
+                state = DownloadStatus.NORMAL;
+                OtaLog.LOGOta("下载mcu包url", ex_url);
+                OtaLog.LOGOta("下载mcu包保存的本地路径", file_name_mcu);
+                //开始下载
+                File downloadFile = new File(OtaConstant.FILE_FOLDER);
+                task = new DownloadTask.Builder(ex_url, downloadFile)
+                        .setFilename(OtaConstant.OTANAME_MCU)
+                        // the minimal interval millisecond for callback progress
+                        .setMinIntervalMillisCallbackProcess(64)
+                        // ignore the same task has already completed in the past.
 
-            //FileDownloader.start(ex_url, OtaConstant.OTANAME_MCU, new ListenerWrapper());
+                        .setPassIfAlreadyCompleted(false)
+                        .build();
+                dowFileInfo = new FileInfo(ex_url, "mcu");
+                dowFileInfo.setTotalBytes(1000);
+                task.enqueue(simpleListener.mcuDownloadListener);
+
+                //FileDownloader.start(ex_url, OtaConstant.OTANAME_MCU, new ListenerWrapper());
+            }else {
+
+                OtaLog.LOGOta("当前有正在下载的进程 mcu", status);
+            }
         }
     }
 
@@ -564,7 +579,7 @@ public class DownLoadService extends Service {
                 public void progressBlock(@NonNull DownloadTask task, int blockIndex,
                                           long currentBlockOffset,
                                           @NonNull SpeedCalculator blockSpeed) {
-                    OtaLog.LOGOta("下载监听","progressBlock： ==== "+ blockIndex+" ===== "+ currentBlockOffset);
+                   // OtaLog.LOGOta("下载监听","progressBlock： ==== "+ blockIndex+" ===== "+ currentBlockOffset);
                 }
 
                 @Override public void progress(@NonNull DownloadTask task, long currentOffset,
@@ -582,7 +597,7 @@ public class DownLoadService extends Service {
 
                 public void blockEnd(@NonNull DownloadTask task, int blockIndex, BlockInfo info,
                                      @NonNull SpeedCalculator blockSpeed) {
-                    OtaLog.LOGOta("下载监听","blockEnd");
+                    //OtaLog.LOGOta("下载监听","blockEnd");
                 }
 
                 @Override
