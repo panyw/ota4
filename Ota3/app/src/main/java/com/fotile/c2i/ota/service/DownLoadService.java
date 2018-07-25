@@ -166,8 +166,6 @@ public class DownLoadService extends Service {
                         // ignore the same task has already completed in the past.
                         .setPassIfAlreadyCompleted(false)
                         .setAutoCallbackToUIThread(false)
-                        .setConnectionCount(10)//设置链接数10
-                        .setPriority(50)//设置优先级
                         .build();
                 dowFileInfo = new FileInfo(url,"ota");
                 dowFileInfo.setTotalBytes(1000);
