@@ -9,6 +9,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.dl7.downloaderlib.DownloadConfig;
 import com.dl7.downloaderlib.DownloadListener;
@@ -161,10 +162,12 @@ public class DownLoadService extends Service {
                 task = new DownloadTask.Builder(url, downloadFile)
                         .setFilename(OtaConstant.OTANAME)
                         // the minimal interval millisecond for callback progress
-                        .setMinIntervalMillisCallbackProcess(512)
+                        .setMinIntervalMillisCallbackProcess(1000)
                         // ignore the same task has already completed in the past.
                         .setPassIfAlreadyCompleted(false)
                         .setAutoCallbackToUIThread(false)
+                        .setConnectionCount(10)//设置链接数10
+                        .setPriority(50)//设置优先级
                         .build();
                 dowFileInfo = new FileInfo(url,"ota");
                 dowFileInfo.setTotalBytes(1000);
@@ -585,7 +588,7 @@ public class DownLoadService extends Service {
 
                 @Override public void progress(@NonNull DownloadTask task, long currentOffset,
                                                @NonNull SpeedCalculator taskSpeed) {
-                    OtaLog.LOGOta("下载监听","progress：==== "+currentOffset*100 /downloadInfo.getTotalLength()+"  "+(int)(currentOffset*1000 /downloadInfo.getTotalLength()));
+                    OtaLog.LOGOta("下载监听","progress：==== "+currentOffset*100 /downloadInfo.getTotalLength()+"  平均速度："+taskSpeed.averageSpeed());
                     float progress = getProgressLong(currentOffset, downloadInfo.getTotalLength());
                     dowFileInfo.setStatus(DownloadStatus.DOWNLOADING);
                     dowFileInfo.setLoadBytes((int)(currentOffset*1000 /downloadInfo.getTotalLength()));
@@ -605,11 +608,12 @@ public class DownLoadService extends Service {
                 public void taskEnd(@NonNull DownloadTask task, @NonNull EndCause cause,
                                     @Nullable Exception realCause,
                                     @NonNull SpeedCalculator taskSpeed) {
-                    OtaLog.LOGOta("下载监听","taskEnd");
+                    OtaLog.LOGOta("下载监听","taskEnd 平均速度："+taskSpeed.averageSpeed());
                     if(realCause!=null){
                         OtaLog.LOGOta("下载监听错误下载====",realCause);
                         Message msg = uiHandler.obtainMessage();
                         dowFileInfo.setStatus(DownloadStatus.ERROR);
+                        Toast.makeText(getApplicationContext(),taskSpeed.averageSpeed(), Toast.LENGTH_LONG).show();
                         msg.obj = new OtaFileInfo(dowFileInfo, "");
                         //这里需要延时1秒
                         /*

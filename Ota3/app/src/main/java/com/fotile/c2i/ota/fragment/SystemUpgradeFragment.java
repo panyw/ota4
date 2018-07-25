@@ -799,16 +799,16 @@ public class SystemUpgradeFragment extends Fragment {
         File file = new File(OtaConstant.FILE_NAME_OTA);
         //有本地文件
         int state = DownLoadService.getDownLoadState();
-        if(state == DownloadStatus.COMPLETE) //下载完成了
+        if(file.exists()) //下载完成或者下载中
         {
-            if (file.exists() && OtaTool.checkDownloadFileMd5(mInfo)){
+            if (OtaTool.checkDownloadFileMd5(mInfo)){
                 checkhandler.sendEmptyMessage(VIEW_DOWN_COMPLETE);
                 OtaTool.RedTips = 1;
                 EventBus.getDefault().post(new DownloadEvent(OtaConstant.DOWNLOAD_COMPLETE,"下载完成"));
                 return;
             }else {
 
-                file.delete();
+                //file.delete();
                 OtaTool.RedTips = 2;
                 EventBus.getDefault().post(new DownloadEvent(OtaConstant.DOWNLOAD_COMPLETE_ERROR,"下载完成,但是失败了"));
             }
