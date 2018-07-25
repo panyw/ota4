@@ -9,7 +9,6 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.dl7.downloaderlib.DownloadConfig;
 import com.dl7.downloaderlib.DownloadListener;
@@ -611,7 +610,6 @@ public class DownLoadService extends Service {
                         OtaLog.LOGOta("下载监听错误下载====",realCause );
                         Message msg = uiHandler.obtainMessage();
                         dowFileInfo.setStatus(DownloadStatus.ERROR);
-                        Toast.makeText(getApplicationContext(),taskSpeed.averageSpeed(), Toast.LENGTH_LONG).show();
                         msg.obj = new OtaFileInfo(dowFileInfo, "");
                         //这里需要延时1秒
                         /*
