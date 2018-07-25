@@ -610,7 +610,7 @@ public class DownLoadService extends Service {
                                     @NonNull SpeedCalculator taskSpeed) {
                     OtaLog.LOGOta("下载监听","taskEnd 平均速度："+taskSpeed.averageSpeed());
                     if(realCause!=null){
-                        OtaLog.LOGOta("下载监听错误下载====",realCause);
+                        OtaLog.LOGOta("下载监听错误下载====",realCause );
                         Message msg = uiHandler.obtainMessage();
                         dowFileInfo.setStatus(DownloadStatus.ERROR);
                         Toast.makeText(getApplicationContext(),taskSpeed.averageSpeed(), Toast.LENGTH_LONG).show();
